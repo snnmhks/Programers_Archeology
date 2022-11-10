@@ -3,17 +3,6 @@
 
 using namespace std;
 
-void ScoreFix(int **ScoreBoard, vector<vector<int>> clockHands)
-{
-    for (int i = 0; i < clockHands.size(); i++)
-    {
-        for (int j = 0; j < clockHands[i].size(); j++)
-        {
-            ScoreBoard[i + 1][j + 1];
-        }
-    }
-}
-
 int solution(vector<vector<int>> clockHands) 
 {
     int** copy = new int* [clockHands.size() + 2];
@@ -21,21 +10,92 @@ int solution(vector<vector<int>> clockHands)
     {
         copy[i] = new int[clockHands[i].size() + 2];
     }
+
     for (int i = 0; i < clockHands.size() + 2; i++)
     {
-        for (int j = 0; j < clockHands[i].size() + 2; j++)
+        for (int j = 0; j < clockHands.size() + 2; j++)
         {
-            copy[i + 1][j + 1] = clockHands[i][j];
+            if (i == 0 || j == 0 || i == clockHands.size() + 1 || j == clockHands.size() + 1 || clockHands[i][j] == 0)
+            {
+                copy[i][j] = 0;
+            }
+            else
+            {
+                copy[i][j] = 4 - clockHands[i][j];
+            }
         }
     }
 
-    int** ScoreBoard = new int*[clockHands.size()];
-    for (int i = 0; i < clockHands.size(); i++)
+    int answer = 0;
+    while (1)
     {
-        ScoreBoard[i] = new int[clockHands[i].size()];
+        int MaxScore = 0;
+        int score = 0;
+        int x = 0;
+        int y = 0;
+        for (int i = 1; i < clockHands.size() + 1; i++)
+        {
+            for (int j = 1; j < clockHands[i].size() + 1; j++)
+            {
+                score = copy[i][j] + copy[i + 1][j] + copy[i - 1][j] + copy[i][j + 1] + copy[i][j - 1];
+                if (score > MaxScore)
+                {
+                    MaxScore = score;
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+        if (MaxScore == 0)
+        {
+            break;
+        }
+
+        int num = copy[x][y];
+        answer += num;
+        if (x - 1 != 0)
+        {
+            copy[x - 1][y] -= num;
+            if (copy[x - 1][y] < 0)
+            {
+                copy[x - 1][y] = -copy[x - 1][y];
+            }
+        }
+        if (x + 1 != clockHands.size() + 2)
+        {
+            copy[x + 1][y] -= num;
+            if (copy[x + 1][y] < 0)
+            {
+                copy[x + 1][y] = -copy[x + 1][y];
+            }
+        }
+        if (y - 1 != 0)
+        {
+            copy[x][y - 1] -= num;
+            if (copy[x][y - 1] < 0)
+            {
+                copy[x][y - 1] = -copy[x][y - 1];
+            }
+        }
+        if (y + 1 != clockHands.size() + 2)
+        {
+            copy[x][y + 1] -= num;
+            if (copy[x][y + 1] < 0)
+            {
+                copy[x][y + 1] = -copy[x][y + 1];
+            }
+        }
+        copy[x][y] -= num;
+        if (copy[x][y] < 0)
+        {
+            copy[x][y] = -copy[x][y];
+        }
     }
 
-    int index = 0;
-    int answer = 0;
     return answer;
+}
+
+int main()
+{
+
 }
