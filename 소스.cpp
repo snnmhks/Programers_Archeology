@@ -34,17 +34,6 @@ int solution(vector<vector<int>> clockHands)
     int answer = 0;
     while (1)
     {
-        for (int i = 0; i < clockHands.size() + 2; i++)
-        {
-            for (int j = 0; j < clockHands.size() + 2; j++)
-            {
-                cout << copy[i][j] << " ";
-            }
-            cout << endl;
-        }
-        int c;
-        cin >> c;
-
         int score1 = 0;
         int score2 = 0;
         int OnOff = 1;
@@ -53,6 +42,16 @@ int solution(vector<vector<int>> clockHands)
             OnOff = 1;
             for (int j = 1; j < clockHands.size() + 1; j++)
             {
+                for (int k = 0; k < clockHands.size() + 2; k++)
+                {
+                    for (int l = 0; l < clockHands.size() + 2; l++)
+                    {
+                        cout << copy[k][l] << " ";
+                    }
+                    cout << endl;
+                }
+                int c;
+                cin >> c;
                 score2 = 0;
                 score1 = copy[i][j] + copy[i + 1][j] + copy[i - 1][j] + copy[i][j + 1] + copy[i][j - 1];
                 if (copy[i][j] - 1 == -1)
@@ -151,7 +150,7 @@ int solution(vector<vector<int>> clockHands)
 
 int main()
 {
-    vector<vector<int>> clockHands = { {2,1,1,1,2},{1,0,0,0,1},{1,0,0,0,1},{1,0,0,0,1},{2,1,1,1,2} };
+    vector<vector<int>> clockHands = { {1,0,0,0,1},{0,3,3,3,0},{0,3,3,3,0},{0,3,3,3,0},{1,0,0,0,1} };
     int result = solution(clockHands);
     cout << result;
     int j;
